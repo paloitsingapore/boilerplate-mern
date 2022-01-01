@@ -1,0 +1,19 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins/breakpoints";
+
+.default-layout {
+  padding: 1em;
+}
+
+@include media-breakpoint-up(sm) {
+  .default-layout {
+    padding: 1em 2em;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .default-layout {
+    padding: 2em 4em;
+  }
+}

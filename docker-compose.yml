@@ -1,0 +1,59 @@
+version: "3"
+services:
+
+  client:
+    build:
+      context: client
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - palo-mern-boilerplate-network
+    volumes:
+      - ./client/src:/usr/app/src
+      - ./client/public:/usr/app/public
+      - ./common:/usr/app/src/common
+    depends_on:
+      - server
+    environment:
+      - REACT_APP_SERVER=http://localhost:5000
+      - CHOKIDAR_USEPOLLING=true
+    command: npm start
+    stdin_open: true
+    tty: true
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - 5001:5001
+    networks:
+      - palo-mern-boilerplate-network
+    volumes:
+      - ./server/src:/usr/app/src
+      - ./common:/usr/app/src/common
+    depends_on:
+      - db
+    environment:
+      - MONGO_URL=mongodb://db:27017
+      - CLIENT=http://localhost:3000
+      - PORT=5001
+    command: /usr/app/node_modules/nodemon/bin/nodemon -L src/server.ts
+
+  db:
+    image: mongo:5.0.5-focal
+    ports:
+      - 27017:27017
+    networks:
+      - palo-mern-boilerplate-network
+    volumes:
+      - mongo-data:/data/db
+
+networks:
+  palo-mern-boilerplate-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local

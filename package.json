@@ -1,0 +1,19 @@
+{
+  "name": "@palo-mern-boilerplate/main",
+  "version": "0.0.1",
+  "description": "",
+  "main": "client/src/index.js",
+  "dependencies": {
+    "prop-types": "^15.8.0"
+  },
+  "scripts": {
+    "start": "docker compose up",
+    "startFresh": "docker compose down -v && docker compose up build",
+    "lint": "cd client && npm run lint && cd ../server && npm run lint",
+    "testClient": "cd client && npm test",
+    "testServer": "cd ../server && npm test",
+    "postinstall": "cd client && npm install && cd ../server && npm install"
+  },
+  "author": "",
+  "license": "ISC"
+}

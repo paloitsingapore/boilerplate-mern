@@ -1,0 +1,27 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:14
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v2-dependencies-
+
+      - run: yarn
+
+      - save_cache:
+          paths:
+            - node_modules
+            - yarn.lock
+            - ./node_modules/.cache/mongodb-memory-server/mongodb-binaries
+          key: v2-dependencies-{{ checksum "package.json" }}
+
+      - run: yarn test
+      - run: yarn test:repl
