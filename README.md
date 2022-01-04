@@ -1,6 +1,6 @@
-# palo MERN boilerplate
+# Palo MERN boilerplate
 
-A MERN stack (Mongo, Express, React, Node) boilerplate to get Palowans up and running quickly.
+A MERN stack (Mongo, Express, React, Node) boilerplate to get Palowans up and running quickly on new projects.
 
 ## Commands:
 
@@ -21,3 +21,13 @@ Then `npm install` and `npm start` - you should be up and running!
 
 Decide whether you want to use React Context with `useReducer` or if you need to add redux. 
 You might find [this article](https://blog.isquaredsoftware.com/2021/01/context-redux-differences/#:~:text=Context%20%2B%20useReducer%20are%20React%20features,values%20or%20changes%20over%20time.) helpful. 
+
+## Contributing
+
+If you add something cool and useful in your project please add it here as well!
+
+Wish list:
+
+- [ ] Git commit hooks (test and lint)
+- [ ] JWT authentication
+- [ ] 2FA
