@@ -1,0 +1,20 @@
+# EXAMPLE USAGE
+# Refer for explanation to following link:
+# https://github.com/evilmartians/lefthook/blob/master/docs/full_guide.md
+#
+ pre-push:
+   commands:
+     packages-audit:
+       tags: security
+       run: npm run auditDeps
+     test:
+       tags: testing
+       run: npm run testAll
+
+ pre-commit:
+   parallel: true
+   commands:
+     lint:
+       tags: linting
+       glob: "*.{js,ts,tsx,json}"
+       run: npm run lint
