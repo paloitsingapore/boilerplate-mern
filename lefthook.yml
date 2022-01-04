@@ -3,6 +3,7 @@
 # https://github.com/evilmartians/lefthook/blob/master/docs/full_guide.md
 #
  pre-push:
+   parallel: true
    commands:
      packages-audit:
        tags: security
@@ -12,7 +13,6 @@
        run: npm run testAll
 
  pre-commit:
-   parallel: true
    commands:
      lint:
        tags: linting
