@@ -1,4 +1,5 @@
 const express = require('express');
+import authRoutes from './routes/auth';
 import logRoutes from './routes/log';
 import timeRoutes from './routes/time';
 
@@ -8,6 +9,7 @@ const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+app.use(authRoutes);
 app.use(logRoutes);
 app.use(timeRoutes);
 
@@ -30,7 +32,6 @@ async function stopServer() {
       if (err) {
         reject(err)
       }
-      console.log('Server stopped');
       resolve()
     });
   });

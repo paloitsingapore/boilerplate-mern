@@ -1,2 +1,2 @@
-afterAll(async () => {
+afterAll(() => {
 })

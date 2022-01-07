@@ -1,7 +1,10 @@
 import {Request, Response, Router} from 'express'
+import ErrorCode from '../common/types/ErrorCode'
+import ErrorSeverity from '../common/types/ErrorSeverity'
+import StatusCode from '../common/types/StatusCode'
 import {DeviceInfo, Log} from '../common/models/Log'
+import * as logUtil from '../utils/logUtil'
 import dbo from '../db/conn'
-import StatusCodes from '../common/types/StatusCodes'
 
 const ObjectId = require('mongodb').ObjectId
 
@@ -67,26 +70,25 @@ logRoutes.route('/log/:id').get((req: Request, res: Response) => {
  * @param body Log
  * @see Log
  */
-logRoutes.route('/log').post((req: Request, res: Response) => {
-  let dbConnection = dbo.getDb()
+logRoutes.route('/log').post(async (req: Request, res: Response) => {
   let log: Log = {
     description: req.body.description,
     message: req.body.message,
-    code: req.body.code,
-    type: req.body.type,
+    code: ErrorCode.CLIENT,
+    severity: req.body.severity || ErrorSeverity.ERROR,
     identifier: req.body.identifier,
     callstack: req.body.callstack,
     deviceInfo: req.body.deviceInfo as DeviceInfo,
-    timestamp: Date.now(),
   }
-  dbConnection.collection('logs').insertOne(log, (err: Error, result: any) => {
-    if (err) {
-      console.log(err)
-      throw err
-    }
-    res.status(result.acknowledged ? StatusCodes.OK : StatusCodes.BAD_REQUEST)
+
+  try {
+    const result = await logUtil.log(log);
+    res.status(result.acknowledged ? StatusCode.OK : StatusCode.BAD_REQUEST)
     res.json(result)
-  })
+  } catch (e) {
+    console.log(e)
+    throw e
+  }
 })
 
 /**
@@ -114,7 +116,6 @@ logRoutes.route('/log/:id').put((req: Request) => {
       if (err) {
         throw err
       }
-      console.log('1 document updated')
       res.json(res)
     })
 })
@@ -136,7 +137,7 @@ logRoutes.route('/logs/:from/:to').delete((req: Request, res) => {
     if (err) {
       throw err
     }
-    res.status(result.acknowledged ? StatusCodes.OK : StatusCodes.BAD_REQUEST)
+    res.status(result.acknowledged ? StatusCode.OK : StatusCode.BAD_REQUEST)
     res.json(result)
   })
 })
@@ -150,7 +151,7 @@ logRoutes.route('/logs').delete((req: Request, res) => {
     if (err) {
       throw err
     }
-    res.status(result.acknowledged ? StatusCodes.OK : StatusCodes.BAD_REQUEST)
+    res.status(result.acknowledged ? StatusCode.OK : StatusCode.BAD_REQUEST)
     res.json(result)
   })
 })

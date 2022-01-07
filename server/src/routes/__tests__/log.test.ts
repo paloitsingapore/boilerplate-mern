@@ -1,7 +1,10 @@
 // NOTE: We are using https://github.com/shelfio/jest-mongodb
-const ObjectId = require('mongodb').ObjectId
 // which allows us to test against an in-memory mongodb server
+const ObjectId = require('mongodb').ObjectId
+import ErrorCode from '../../common/types/ErrorCode'
+import ErrorSeverity from '../../common/types/ErrorSeverity'
 import {Log} from '../../common/models/Log'
+
 const { stopServer } = require('../../server.ts')
 const {MongoClient} = require('mongodb')
 // eslint-disable-next-line node/no-unpublished-require
@@ -15,10 +18,10 @@ describe('Log endpoints', () => {
   const mockLog: Log = {
     description: 'A test log',
     message: 'Something happened',
-    code: '42',
-    type: 42,
+    code: ErrorCode.CLIENT,
+    severity: ErrorSeverity.ERROR,
     identifier: '',
-    callstack: ['thing1', 'thing2'],
+    callstack: 'thing1, thing2',
     deviceInfo: {
       browser: 'Brave',
       os: 'Linux',
@@ -39,8 +42,8 @@ describe('Log endpoints', () => {
   })
 
   afterAll(async () => {
-    await stopServer() // If you don't do this, an handle keeps Jest from exiting
-    await connection.close()
+    await connection.close(true)
+    await stopServer() // If you don't do this, a handle keeps Jest from exiting
   })
 
   it('POST /log should insert a log', async () => {

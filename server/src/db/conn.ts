@@ -13,7 +13,6 @@ export default {
     client.connect((err: AnyError, connection: any) => {
       if (connection) {
         database = connection.db('paloMernDB')
-        console.log('Successfully connected to MongoDB.')
       }
       return callback(err)
     })
