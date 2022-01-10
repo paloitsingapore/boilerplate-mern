@@ -28,6 +28,6 @@ If you add something cool and useful in your project please add it here as well!
 
 Wish list:
 
-- [ ] Git commit hooks (test and lint)
-- [ ] JWT authentication
+- [x] Git commit hooks (test and lint)
+- [x] JWT authentication
 - [ ] 2FA
